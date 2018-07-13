@@ -1,0 +1,7 @@
+<nav>
+  <ul class="pagination-container">
+    <li *ngFor="let page of pagesRange" (click)="pageChangeHandler(page)" [class.selected]="page === currentPage">
+      {{ page }}
+    </li> 
+  </ul>
+</nav>

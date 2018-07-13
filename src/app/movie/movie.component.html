@@ -1,0 +1,21 @@
+<div class="movie-container">
+  <img [src]="movie.imageUrl" (click)="handleModalOpen()" class="movie-thumbnail">
+  <div class="movie-details">
+    <p><span class="movie-details-label">Title: </span>{{ movie.title }}</p>
+    <div class="movie-stats">
+      <p><span class="movie-details-label">Views: </span>{{ movie.viewCount }}</p>
+      <p><span class="movie-details-label">Likes: </span>{{ movie.likeCount }}</p>
+    </div>
+    <p><span class="movie-details-label">Added at: </span>{{ movie.createdAt | date }}</p>
+  </div>
+  <div class="movie-watch-button-container">
+    <button (click)="handleModalOpen()">Watch movie</button>
+  </div>
+</div>
+
+<div class="modal" [class.open]="openModal">
+  <div class="modal-content">
+    <span class="close" (click)="handleModalOpen()">x</span>
+    <iframe type="text/html" width="640" height="360" frameborder="0" [src]="getIframeSrc(movie.movieId)"></iframe>
+  </div>
+</div>
