@@ -11,9 +11,11 @@
   </div>
   <div>
     Sort
-    <select #sort (change)="sortingHandler(sort.value)">
-      <option *ngFor="let option of sortingOptions" [value]="option.value">{{ option.label }}</option>
-    </select>
+    <mat-form-field class="sorting-form">
+      <mat-select #sort (selectionChange)="sortingHandler(sort.value)" [(value)]="defaultSortingOption">
+        <mat-option *ngFor="let option of sortingOptions" [value]="option.value">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div>
     Show: 

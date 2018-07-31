@@ -12,6 +12,7 @@ import { MoviesService } from '../services/movies.service';
 export class MovieListComponent implements OnInit {
   movies: Movie[] = [];
   totalMoviesCount: number;
+  defaultSortingOption = '1';
 
   filterChecked: boolean = false;
   sortingOptions: Array<any> = [
@@ -64,7 +65,7 @@ export class MovieListComponent implements OnInit {
     this.resetState(0, this.moviesPerPage);
   }
 
-  sortingHandler(selectedSortValue: string): void {  
+  sortingHandler(selectedSortValue: string): void {
     this.moviesService.sortingHandler(this.sortingOptions, selectedSortValue);
     this.resetState(0, this.moviesPerPage);
   }

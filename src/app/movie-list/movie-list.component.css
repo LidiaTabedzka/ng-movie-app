@@ -1,6 +1,10 @@
 .movies-list-actions-container {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+}
+.sorting-form {
+  margin-left: 20px;
 }
 .empty-container {
   text-align: center;
