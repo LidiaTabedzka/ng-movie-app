@@ -48,3 +48,12 @@
   margin: 20px 0;
   text-align: center;
 }
+.tiles-display {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tiles-display .single-movie-container {
+  flex-direction: column;
+  margin-right: 20px;
+  width: 20%;
+}

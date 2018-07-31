@@ -3,11 +3,16 @@
     <input
       [(ngModel)]="movieInput"
       placeholder="Movie link or id"
-      autofocus (ngModelChange)="handleInputChange()"
+      autofocus
+      (ngModelChange)="handleInputChange()"
       (keyup.enter)="handleSubmit()">
   </label>
   <button (click)="handleSubmit()">Submit</button>
 </div>
-<div *ngIf="error" class="error-message-container">
-  {{ errorMessage }}
+<div *ngIf="searchSubmit" class="search-message-container">
+  <p>Youtube search {{ searchCompleted.youtube ? 'completed' : 'in progress' }}. {{ messages.youtube }}</p>
+  <p>Vimeo search {{ searchCompleted.vimeo ? 'completed' : 'in progress' }}. {{ messages.vimeo }}</p>
+</div>
+<div *ngIf="messages.general" class="error-message-container">
+  {{ messages.general }}
 </div>

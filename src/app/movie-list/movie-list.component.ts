@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { last } from '@angular/router/src/utils/collection';
 
-import { MoviesService } from '../movies.service';
 import { Movie } from '../movie';
+import { YoutubeService } from '../services/youtube.service';
+import { MoviesService } from '../services/movies.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -15,10 +15,12 @@ export class MovieListComponent implements OnInit {
 
   filterChecked: boolean = false;
   sortingOptions: Array<any> = [
-    { value: '1', label: 'from oldest', sortingFormula: (movies: Movie[]) => movies.sort((a, b) => a.createdAt - b.createdAt) },
-    { value: '2', label: 'from latest', sortingFormula: (movies: Movie[]) => movies.sort((a, b) => b.createdAt - a.createdAt) }
+    { value: '1', label: 'from latest', sortingFormula: (movies: Movie[]) => movies.sort((a, b) => b.createdAt - a.createdAt) },
+    { value: '2', label: 'from oldest', sortingFormula: (movies: Movie[]) => movies.sort((a, b) => a.createdAt - b.createdAt) }
   ];
   paginationOptions: Array<number> = [5, 10, 20, 50, 100];
+  displayOptions: Array<string> = ['list', 'tiles'];
+  tilesDisplayChosen: boolean = false;
 
   moviesPerPage: number = 5;
   pagesRange: Array<number>;
@@ -93,14 +95,19 @@ export class MovieListComponent implements OnInit {
       .subscribe(response => {
         response.map(resp => {
           if (resp.items.length) {
-            this.moviesService.addMovie(this.moviesService.responseFormatter(resp));
+            this.moviesService.addMovie(this.youtubeService.youtubeResponseFormatter(resp));
             this.resetState(0, this.moviesPerPage);
           }
         });
       });
   }
 
+  displayHandler(displayOption: string): void {
+    this.tilesDisplayChosen = displayOption === 'tiles';
+  }
+
   constructor(
+    private youtubeService: YoutubeService,
     private moviesService: MoviesService
   ) { }
 

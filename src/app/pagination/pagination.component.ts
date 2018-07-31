@@ -10,7 +10,7 @@ export class PaginationComponent implements OnInit {
   @Input() currentPage: number;
   @Output() currentPageHandler = new EventEmitter<number>();
 
-  pageChangeHandler(page : number) {
+  pageChangeHandler(page: number): void {
     this.currentPageHandler.emit(page);
   }
 

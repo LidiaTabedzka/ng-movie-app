@@ -11,12 +11,12 @@ export class MovieComponent implements OnInit {
   @Input() movie: Movie;
   openModal: boolean = false;
 
-  handleModalOpen() {
+  handleModalOpen(): void {
     this.openModal = !this.openModal;
   }
 
-  getIframeSrc(movieId: string) {
-    const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + movieId);
+  sanitizeIframeSrc(src: string): SafeResourceUrl {
+    const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(src);
     return url;
   }
 

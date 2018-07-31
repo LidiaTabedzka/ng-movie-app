@@ -5,6 +5,7 @@ export class Movie {
   imageUrl: string;
   viewCount: string;
   likeCount: string;
+  iframeSrc: string;
   favourite: boolean;
   createdAt: number;
 }

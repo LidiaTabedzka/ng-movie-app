@@ -1,5 +1,5 @@
 <div class="movie-container">
-  <img [src]="movie.imageUrl" (click)="handleModalOpen()" class="movie-thumbnail">
+  <img [src]="movie.imageUrl" (click)="handleModalOpen()" class="movie-thumbnail" width="320" height="180">
   <div class="movie-details">
     <p><span class="movie-details-label">Title: </span>{{ movie.title }}</p>
     <div class="movie-stats">
@@ -16,6 +16,6 @@
 <div class="modal" [class.open]="openModal">
   <div class="modal-content">
     <span class="close" (click)="handleModalOpen()">x</span>
-    <iframe type="text/html" width="640" height="360" frameborder="0" [src]="getIframeSrc(movie.movieId)"></iframe>
+    <iframe type="text/html" width="640" height="360" frameborder="0" allowfullscreen [src]="sanitizeIframeSrc(movie.iframeSrc)"></iframe>
   </div>
 </div>
