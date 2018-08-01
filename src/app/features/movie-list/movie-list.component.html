@@ -1,36 +1,18 @@
 <div class="sample-upload-button-container">
   <button (click)="uploadListHandler()">Upload sample movies list</button>
 </div>
-<div *ngIf="movies.length || filterChecked" class="movies-list-actions-container">
-  <button (click)="clearList()">Clear list</button>
-  <div>
-    <label>
-      Show favourites only
-      <input #favFilter type="checkbox" name="fav-filter" (click)="favouritesFilterHandler(favFilter.checked)">
-    </label>
-  </div>
-  <div>
-    Sort
-    <mat-form-field class="sorting-form">
-      <mat-select #sort (selectionChange)="sortingHandler(sort.value)" [(value)]="DEFAULT_SORTING_OPTION">
-        <mat-option *ngFor="let option of SORTING_OPTIONS" [value]="option.value">{{ option.label }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div>
-    Show: 
-    <select #perPage (change)="perPageHandler(perPage.value)">
-      <option *ngFor="let option of PAGINATION_OPTIONS" [value]="option">{{ option }}</option>
-    </select>
-    movies per page
-  </div>
-  <div>
-    Display: 
-    <select #display (change)="displayHandler(display.value)">
-      <option *ngFor="let displayOption of DISPLAY_OPTIONS" [value]="displayOption">{{ displayOption }}</option>
-    </select>
-  </div>
-</div>
+<movie-list-panel 
+  *ngIf="movies.length || filterChecked"
+  (clearList)="clearList($event)"
+  (favouritesFilterHandler)="favouritesFilterHandler($event)"
+  (sortingHandler)="sortingHandler($event)"
+  [sortingOptions]="SORTING_OPTIONS"
+  [defaultSortingOption]="DEFAULT_SORTING_OPTION"
+  (perPageHandler)="perPageHandler($event)"
+  [paginationOptions]="PAGINATION_OPTIONS"
+  [displayOptions]="DISPLAY_OPTIONS"
+  (displayHandler)="displayHandler($event)"
+></movie-list-panel>
 
 <div *ngIf="!movies.length" class="empty-container"><h3>No movies added to the list yet</h3></div>
 

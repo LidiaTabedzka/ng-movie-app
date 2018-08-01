@@ -1,0 +1,30 @@
+<div class="movies-list-panel">
+  <button (click)="clearListHandler()">Clear list</button>
+  <div>
+    <label>
+      Show favourites only
+      <input #favFilter type="checkbox" name="fav-filter" (click)="favouritesFilterHandle(favFilter.checked)">
+    </label>
+  </div>
+  <div>
+    Sort
+    <mat-form-field class="sorting-form">
+      <mat-select #sort (selectionChange)="sortingHandle(sort.value)" [(value)]="defaultSortingOption">
+        <mat-option *ngFor="let option of sortingOptions" [value]="option.value">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    Show: 
+    <select #perPage (change)="perPageHandle(perPage.value)">
+      <option *ngFor="let option of paginationOptions" [value]="option">{{ option }}</option>
+    </select>
+    movies per page
+  </div>
+  <div>
+    Display: 
+    <select #display (change)="displayHandle(display.value)">
+      <option *ngFor="let displayOption of displayOptions" [value]="displayOption">{{ displayOption }}</option>
+    </select>
+  </div>
+</div>

@@ -6,13 +6,15 @@ import { SharedModule } from '../shared/shared.module';
 import { MovieComponent } from './movie/movie.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { MovieListComponent } from './movie-list/movie-list.component';
+import { MovieListPanelComponent } from './movie-list-panel/movie-list-panel.component';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     MovieComponent,
     AddMovieComponent,
-    MovieListComponent
+    MovieListComponent,
+    MovieListPanelComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { AppRoutingModule } from './app-routing.module';
     MovieComponent,
     AddMovieComponent,
     MovieListComponent,
+    MovieListPanelComponent,
     AppRoutingModule
   ]
 })
