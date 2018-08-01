@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Movie } from '../movie';
+import { Movie } from '../../shared/models/movie';
 
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
-export class MovieComponent implements OnInit {
+export class MovieComponent {
   @Input() movie: Movie;
-  openModal: boolean = false;
+  openModal = false;
+
+  constructor(private sanitizer: DomSanitizer) { }
 
   handleModalOpen(): void {
     this.openModal = !this.openModal;
@@ -19,10 +21,4 @@ export class MovieComponent implements OnInit {
     const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(src);
     return url;
   }
-
-  constructor(private sanitizer: DomSanitizer) { }
-
-  ngOnInit() {
-  }
-
 }

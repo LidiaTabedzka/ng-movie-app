@@ -3,20 +3,22 @@ import { v4 as uuid } from 'uuid';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Movie } from '../movie';
+import { Movie } from '../shared/models/movie';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VimeoService {
-  vimeoUrl: string = 'https://api.vimeo.com/videos/';
-  vimeoPlayerUrl: string = 'https://player.vimeo.com/video/';
-  accessToken: string = '38df3f6069afd63ba401542c186816d3';
+  private readonly VIMEO_URL = 'https://api.vimeo.com/videos/';
+  private readonly VIMEO_PLAYER_URL = 'https://player.vimeo.com/video/';
+  private readonly ACCESS_TOKEN = '38df3f6069afd63ba401542c186816d3';
+
+  constructor(private http: HttpClient) { }
 
   getVimeoData(movieInput: string): Observable<any> {
-    const url: string = `${this.vimeoUrl}${movieInput}`;
+    const url = `${this.VIMEO_URL}${movieInput}`;
     return this.http.get(url, {
-      headers: new HttpHeaders({ 'Authorization': `bearer ${this.accessToken}` })
+      headers: new HttpHeaders({ 'Authorization': `bearer ${this.ACCESS_TOKEN}` })
     });
   }
 
@@ -30,12 +32,10 @@ export class VimeoService {
       imageUrl: resp.pictures.sizes[3].link,
       viewCount: resp.stats.plays,
       likeCount: resp.metadata.connections.likes.total,
-      iframeSrc: `${this.vimeoPlayerUrl}${movieId}`,
+      iframeSrc: `${this.VIMEO_PLAYER_URL}${movieId}`,
       favourite: false,
       createdAt: Date.now()
     };
     return movie;
   }
-
-  constructor(private http: HttpClient) { }
 }

@@ -1,13 +1,14 @@
 <div class="movie-input-container">
-  <label>Enter the movie link or id (youtube or vimeo):
+  <label class="movie-input-label">Enter the movie link or id (youtube or vimeo):
     <input
+      class="movie-input"
       [(ngModel)]="movieInput"
       placeholder="Movie link or id"
       autofocus
       (ngModelChange)="handleInputChange()"
       (keyup.enter)="handleSubmit()">
   </label>
-  <button (click)="handleSubmit()">Submit</button>
+  <button (click)="handleSubmit()" class="movie-input-submit-button">Submit</button>
 </div>
 <div *ngIf="searchSubmit" class="search-message-container">
   <p>Youtube search {{ searchCompleted.youtube ? 'completed' : 'in progress' }}. {{ messages.youtube }}</p>

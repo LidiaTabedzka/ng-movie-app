@@ -3,18 +3,20 @@ import { v4 as uuid } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Movie } from '../movie';
+import { Movie } from '../shared/models/movie';
 
 @Injectable({
   providedIn: 'root'
 })
 export class YoutubeService {
-  apiKey: string = 'AIzaSyCO1Fp9-Aw7z6FNDN-LKIHOHSswVeQ3RTk';
-  youtubeUrl: string = 'https://www.googleapis.com/youtube/v3/videos?id=';
-  youtubePlayerUrl: string = 'http://www.youtube.com/embed/';
+  private readonly API_KEY = 'AIzaSyCO1Fp9-Aw7z6FNDN-LKIHOHSswVeQ3RTk';
+  private readonly YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/videos?id=';
+  private readonly YOUTUBE_PLAYER_URL = 'http://www.youtube.com/embed/';
+
+  constructor(private http: HttpClient) { }
 
   getYoutubeData(movieId: string): Observable<any> {
-    const url: string = `${this.youtubeUrl}${movieId}&key=${this.apiKey}&part=snippet,contentDetails,statistics`;
+    const url = `${this.YOUTUBE_URL}${movieId}&key=${this.API_KEY}&part=snippet,contentDetails,statistics`;
     return this.http.get(url);
   }
 
@@ -27,12 +29,10 @@ export class YoutubeService {
       imageUrl: movieDetails.snippet.thumbnails.medium.url,
       viewCount: movieDetails.statistics.viewCount,
       likeCount: movieDetails.statistics.likeCount,
-      iframeSrc: `${this.youtubePlayerUrl}${movieDetails.id}`,
+      iframeSrc: `${this.YOUTUBE_PLAYER_URL}${movieDetails.id}`,
       favourite: false,
       createdAt: Date.now()
     };
     return movie;
   }
-
-  constructor(private http: HttpClient) { }
 }

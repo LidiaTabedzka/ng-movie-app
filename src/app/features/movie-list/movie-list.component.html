@@ -12,22 +12,22 @@
   <div>
     Sort
     <mat-form-field class="sorting-form">
-      <mat-select #sort (selectionChange)="sortingHandler(sort.value)" [(value)]="defaultSortingOption">
-        <mat-option *ngFor="let option of sortingOptions" [value]="option.value">{{ option.label }}</mat-option>
+      <mat-select #sort (selectionChange)="sortingHandler(sort.value)" [(value)]="DEFAULT_SORTING_OPTION">
+        <mat-option *ngFor="let option of SORTING_OPTIONS" [value]="option.value">{{ option.label }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div>
     Show: 
     <select #perPage (change)="perPageHandler(perPage.value)">
-      <option *ngFor="let option of paginationOptions" [value]="option">{{ option }}</option>
+      <option *ngFor="let option of PAGINATION_OPTIONS" [value]="option">{{ option }}</option>
     </select>
     movies per page
   </div>
   <div>
     Display: 
     <select #display (change)="displayHandler(display.value)">
-      <option *ngFor="let displayOption of displayOptions" [value]="displayOption">{{ displayOption }}</option>
+      <option *ngFor="let displayOption of DISPLAY_OPTIONS" [value]="displayOption">{{ displayOption }}</option>
     </select>
   </div>
 </div>
