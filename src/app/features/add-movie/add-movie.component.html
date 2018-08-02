@@ -1,0 +1,15 @@
+<div class="movie-input-container">
+  <label class="movie-input-label">Enter the movie link or id (youtube or vimeo):
+    <input
+      class="movie-input"
+      [(ngModel)]="movieInput"
+      placeholder="Movie link or id"
+      autofocus
+      (ngModelChange)="handleInputChange()"
+      (keyup.enter)="handleSubmit()">
+  </label>
+  <button (click)="handleSubmit()" class="movie-input-submit-button">Submit</button>
+</div>
+<div *ngFor="let error of errorMessages" class="search-message-container">
+  <p>{{ error }}</p>
+</div>

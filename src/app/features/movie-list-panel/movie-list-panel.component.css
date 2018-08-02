@@ -1,0 +1,9 @@
+.movies-list-panel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.sorting-form {
+  margin-left: 20px;
+}

@@ -2,12 +2,14 @@
   text-align: center;
   margin-top: 50px;
 }
+
 .app-buttons-container {
   display: flex;
   justify-content: space-around;
   max-width: 500px;
   margin: 50px auto;
 }
+
 .app-buttons-container a {
   margin-right: 10px;
   background-color: #369;
@@ -19,6 +21,7 @@
   text-decoration: none;
   transition: 0.3s;
 }
+
 .app-buttons-container a:hover {
   background-color: #2e5d8c;
   border-color: #224568;

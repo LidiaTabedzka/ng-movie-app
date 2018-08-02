@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Movie } from '../movie';
-import { YoutubeService } from '../services/youtube.service';
-import { MoviesService } from '../services/movies.service';
+import { Movie } from '../../shared/models/movie';
+import { YoutubeService } from '../../core/youtube.service';
+import { MoviesService } from '../../core/movies.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -10,23 +10,29 @@ import { MoviesService } from '../services/movies.service';
   styleUrls: ['./movie-list.component.css']
 })
 export class MovieListComponent implements OnInit {
-  movies: Movie[] = [];
-  totalMoviesCount: number;
-  defaultSortingOption = '1';
-
-  filterChecked: boolean = false;
-  sortingOptions: Array<any> = [
+  private readonly PAGINATION_OPTIONS = [5, 10, 20, 50, 100];
+  private readonly DISPLAY_OPTIONS = ['list', 'tiles'];
+  private readonly SORTING_OPTIONS = [
     { value: '1', label: 'from latest', sortingFormula: (movies: Movie[]) => movies.sort((a, b) => b.createdAt - a.createdAt) },
     { value: '2', label: 'from oldest', sortingFormula: (movies: Movie[]) => movies.sort((a, b) => a.createdAt - b.createdAt) }
   ];
-  paginationOptions: Array<number> = [5, 10, 20, 50, 100];
-  displayOptions: Array<string> = ['list', 'tiles'];
-  tilesDisplayChosen: boolean = false;
+  private DEFAULT_SORTING_OPTION = '1';
 
-  moviesPerPage: number = 5;
+  movies: Movie[] = [];
+  totalMoviesCount: number;
+
+  filterChecked = false;
+  tilesDisplayChosen = false;
+
+  moviesPerPage = 5;
+  pageOffset = 0;
+  currentPage = 1;
   pagesRange: Array<number>;
-  pageOffset: number = 0;
-  currentPage: number = 1;
+
+  constructor(
+    private youtubeService: YoutubeService,
+    private moviesService: MoviesService
+  ) { }
 
   getMovies(pageOffset: number, perPage: number): void {
     const { movies, totalMoviesCount } =  this.moviesService.getMovies(perPage, pageOffset);
@@ -66,7 +72,7 @@ export class MovieListComponent implements OnInit {
   }
 
   sortingHandler(selectedSortValue: string): void {
-    this.moviesService.sortingHandler(this.sortingOptions, selectedSortValue);
+    this.moviesService.sortingHandler(this.SORTING_OPTIONS, selectedSortValue);
     this.resetState(0, this.moviesPerPage);
   }
 
@@ -83,7 +89,7 @@ export class MovieListComponent implements OnInit {
     this.pagesRange = pagesRange;
   }
 
-  currentPageHandler(pageNumber: number) {
+  currentPageHandler(pageNumber: number): void {
     this.currentPage = pageNumber;
     const pageOffset: number = (pageNumber - 1) * this.moviesPerPage;
     this.pageOffset = pageOffset;
@@ -95,7 +101,7 @@ export class MovieListComponent implements OnInit {
     this.moviesService.uploadSampleList()
       .subscribe(response => {
         response.map(resp => {
-          if (resp.items.length) {
+          if (resp) {
             this.moviesService.addMovie(this.youtubeService.youtubeResponseFormatter(resp));
             this.resetState(0, this.moviesPerPage);
           }
@@ -107,13 +113,7 @@ export class MovieListComponent implements OnInit {
     this.tilesDisplayChosen = displayOption === 'tiles';
   }
 
-  constructor(
-    private youtubeService: YoutubeService,
-    private moviesService: MoviesService
-  ) { }
-
   ngOnInit() {
     this.resetState(0, 5);
   }
-
 }

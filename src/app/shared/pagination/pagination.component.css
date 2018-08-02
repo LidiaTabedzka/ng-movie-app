@@ -5,13 +5,16 @@
   justify-content: center;
   margin-bottom: 50px;
 }
+
 .pagination-container li {
   margin-right: 10px;
   font-size: 18px;
 }
+
 .pagination-container li:hover {
   cursor: pointer;
 }
+
 .selected {
   color: blue;
 }

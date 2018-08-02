@@ -1,31 +1,39 @@
 :host {
   flex-grow: 1;
 }
+
 .movie-container {
   display: flex;
 }
+
 .movie-thumbnail:hover {
   cursor: pointer;
 }
+
 .movie-details {
   margin-left: 20px;
   flex-grow: 1;
 }
+
 .movie-details-label {
   font-weight: bold;
 }
+
 .movie-stats {
   display: flex;
 }
+
 .movie-stats p {
   margin-right: 10px;
 }
+
 .movie-watch-button-container {
   margin-right: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .movie-watch-button-container button:hover {
   cursor: pointer;
 }
@@ -42,6 +50,7 @@
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
 }
+
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -50,6 +59,7 @@
   padding: 20px;
   text-align: center;
 }
+
 .close {
   color: #aaa;
   float: right;
@@ -57,12 +67,14 @@
   font-weight: bold;
   margin: -20px -10px 0 0;
 }
+
 .close:hover,
 .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
+
 .open {
   display: block;
 }

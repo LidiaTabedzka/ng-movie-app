@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Movie } from '../movie';
+import { Movie } from '../shared/models/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,4 @@ export class LocalStorageService {
   removeItem(): void {
     localStorage.removeItem('moviesList');
   }
-
-  constructor() { }
 }

@@ -1,20 +1,14 @@
-.movies-list-actions-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.sorting-form {
-  margin-left: 20px;
-}
 .empty-container {
   text-align: center;
   padding: 50px;
 }
+
 .movies-list-container {
   list-style-type: none;
   margin: 0;
   padding: 20px;
 }
+
 .single-movie-container {
   margin-bottom: 30px;
   padding: 20px;
@@ -23,6 +17,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .delete-button {
   position: absolute;
   top: 0;
@@ -33,29 +28,36 @@
   font-weight: bold;
   color: #db0d0d;
 }
+
 .delete-button:hover {
   cursor: pointer;
   font-size: 22px;
 }
+
 .favourite {
   border-color: palevioletred;
 }
+
 .movies-list-fav-button-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .fav-button:hover {
   cursor: pointer;
 }
+
 .sample-upload-button-container {
   margin: 20px 0;
   text-align: center;
 }
+
 .tiles-display {
   display: flex;
   flex-wrap: wrap;
 }
+
 .tiles-display .single-movie-container {
   flex-direction: column;
   margin-right: 20px;
