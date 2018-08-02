@@ -101,7 +101,7 @@ export class MovieListComponent implements OnInit {
     this.moviesService.uploadSampleList()
       .subscribe(response => {
         response.map(resp => {
-          if (resp.items.length) {
+          if (resp) {
             this.moviesService.addMovie(this.youtubeService.youtubeResponseFormatter(resp));
             this.resetState(0, this.moviesPerPage);
           }

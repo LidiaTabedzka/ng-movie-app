@@ -10,10 +10,6 @@
   </label>
   <button (click)="handleSubmit()" class="movie-input-submit-button">Submit</button>
 </div>
-<div *ngIf="searchSubmit" class="search-message-container">
-  <p>Youtube search {{ searchCompleted.youtube ? 'completed' : 'in progress' }}. {{ messages.youtube }}</p>
-  <p>Vimeo search {{ searchCompleted.vimeo ? 'completed' : 'in progress' }}. {{ messages.vimeo }}</p>
-</div>
-<div *ngIf="messages.general" class="error-message-container">
-  {{ messages.general }}
+<div *ngFor="let error of errorMessages" class="search-message-container">
+  <p>{{ error }}</p>
 </div>

@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 import { Movie } from '../shared/models/movie';
+import { MovieUtilsService } from './movie-utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +16,20 @@ export class YoutubeService {
   private readonly YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/videos?id=';
   private readonly YOUTUBE_PLAYER_URL = 'http://www.youtube.com/embed/';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private movieUtilsService: MovieUtilsService
+  ) { }
 
   getYoutubeData(movieId: string): Observable<any> {
     const url = `${this.YOUTUBE_URL}${movieId}&key=${this.API_KEY}&part=snippet,contentDetails,statistics`;
-    return this.http.get(url);
+    return this.http.get(url).pipe(
+      map((resp: any) => resp.items[0]),
+      catchError(err => throwError(this.movieUtilsService.YOUTUBE_ERROR_MESSAGE))
+    );
   }
 
-  youtubeResponseFormatter(resp): Movie {
-    const movieDetails = resp.items[0];
+  youtubeResponseFormatter(movieDetails): Movie {
     const movie: Movie = {
       id: uuid(),
       movieId: movieDetails.id,

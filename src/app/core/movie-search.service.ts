@@ -1,69 +1,45 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
+
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 import { YoutubeService } from './youtube.service';
 import { VimeoService } from './vimeo.service';
-import { Observable } from 'rxjs';
+import { MovieUtilsService } from './movie-utils.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MovieSearchService implements OnDestroy {
-  private readonly NO_VIMEO_MOVIES_MESSAGE = 'No movies found on Vimeo.';
-  private readonly VIMEO_ERROR_MESSAGE = 'Sorry something went wrong with Vimeo api.';
-  private readonly NO_YOUTUBE_MOVIES_MESSAGE = 'No movies found on Youtube.';
-  private readonly YOUTUBE_ERROR_MESSAGE = 'Sorry something went wrong with Youtube api.';
-
-  searchResults = {
-    youtube: '',
-    vimeo: '',
-    vimeoErrorMessage: '',
-    youtubeErrorMessage: '',
-    searchCompleted: { vimeo: false, youtube: false }
-  }
-
+export class MovieSearchService {
   constructor(
     private youtubeService: YoutubeService,
     private vimeoService: VimeoService,
+    private movieUtilsService: MovieUtilsService
   ) { }
 
-  handleVimeoSearch(movieId: string): void {
-    this.vimeoService.getVimeoData(movieId)
-      .subscribe(
-        resp => this.searchResults.vimeo = resp,
-        err => {
-          this.searchResults.searchCompleted.vimeo = true;
-          if (err.status === 404) {
-            this.searchResults.vimeoErrorMessage = this.NO_VIMEO_MOVIES_MESSAGE;
-          } else {
-            this.searchResults.vimeoErrorMessage = this.VIMEO_ERROR_MESSAGE ;
-          }
-        });
-  }
-
-  handleYoutubeSearch(movieId: string) {
-    this.youtubeService.getYoutubeData(movieId)
-      .subscribe(
-        resp => {
-          if (resp.items.length) {
-            this.searchResults.youtube = resp;
-          } else {
-            this.searchResults.searchCompleted.youtube = true;
-            this.searchResults.youtubeErrorMessage = this.NO_YOUTUBE_MOVIES_MESSAGE;
-          }
-        },
-        err => {
-          this.searchResults.searchCompleted.youtube = true;
-          this.searchResults.youtubeErrorMessage = this.YOUTUBE_ERROR_MESSAGE;
-        }
+  handleVimeoSearch(movieId: string): Observable<any> {
+    return this.vimeoService.getVimeoData(movieId)
+      .pipe(
+        map(movie => ({ searchResults: movie, provider: 'vimeo' })),
       );
   }
 
-  findMovie(movieId: string) {
-    this.handleVimeoSearch(movieId);
-    this.handleYoutubeSearch(movieId);
+  handleYoutubeSearch(movieId: string): Observable<any> {
+    return this.youtubeService.getYoutubeData(movieId)
+      .pipe(
+        map(movie => {
+          if (movie) {
+            return { searchResults: movie, provider: 'youtube' };
+          }
+          return this.movieUtilsService.NO_YOUTUBE_MOVIES_MESSAGE
+        })
+      );
   }
 
-  ngOnDestroy() {
- 
+  findMovie(movieId: string): Observable<any> {
+    return forkJoin([
+      this.handleYoutubeSearch(movieId).pipe(catchError(error => of(error))),
+      this.handleVimeoSearch(movieId).pipe(catchError(error => of(error)))]);
   }
 }
