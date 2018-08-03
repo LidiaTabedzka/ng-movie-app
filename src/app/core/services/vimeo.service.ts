@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { Movie } from '../shared/models/movie';
-import { MovieUtilsService } from './movie-utils.service';
+import { Movie } from '../../shared/models/movie';
+import { NO_VIMEO_MOVIES_MESSAGE, VIMEO_ERROR_MESSAGE } from '../../shared/constans/messages';
 
 @Injectable({
   providedIn: 'root'
@@ -16,26 +16,26 @@ export class VimeoService {
   private readonly ACCESS_TOKEN = '38df3f6069afd63ba401542c186816d3';
 
   constructor(
-    private http: HttpClient,
-    private movieUtilsService: MovieUtilsService
+    private http: HttpClient
   ) { }
 
-  getVimeoData(movieInput: string): Observable<any> {
+  getVimeoData(movieInput: string) {
     const url = `${this.VIMEO_URL}${movieInput}`;
     return this.http.get(url, {
       headers: new HttpHeaders({ 'Authorization': `bearer ${this.ACCESS_TOKEN}` })
     })
       .pipe(
+        map(resp => this.vimeoResponseFormatter(resp)),
         catchError(err => {
           if (err.status === 404) {
-            return throwError(this.movieUtilsService.NO_VIMEO_MOVIES_MESSAGE);
+            return throwError(NO_VIMEO_MOVIES_MESSAGE);
           }
-          return throwError(this.movieUtilsService.VIMEO_ERROR_MESSAGE);
+          return throwError(VIMEO_ERROR_MESSAGE);
         })
       );
   }
 
-  vimeoResponseFormatter(resp): Movie {
+  private vimeoResponseFormatter(resp): Movie {
     const movieId: string = resp.link.split('/')[resp.link.split('/').length - 1];
 
     const movie: Movie = {

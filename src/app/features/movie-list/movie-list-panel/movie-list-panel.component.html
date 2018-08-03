@@ -23,7 +23,7 @@
   </div>
   <div>
     Display: 
-    <select #display (change)="displayHandle(display.value)">
+    <select #display (change)="onDisplayChanged(display.value)">
       <option *ngFor="let displayOption of displayOptions" [value]="displayOption">{{ displayOption }}</option>
     </select>
   </div>

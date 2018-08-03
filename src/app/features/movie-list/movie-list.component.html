@@ -1,7 +1,7 @@
 <div class="sample-upload-button-container">
   <button (click)="uploadListHandler()">Upload sample movies list</button>
 </div>
-<movie-list-panel 
+<app-movie-list-panel 
   *ngIf="movies.length || filterChecked"
   (clearList)="clearList($event)"
   (favouritesFilterHandler)="favouritesFilterHandler($event)"
@@ -11,8 +11,8 @@
   (perPageHandler)="perPageHandler($event)"
   [paginationOptions]="PAGINATION_OPTIONS"
   [displayOptions]="DISPLAY_OPTIONS"
-  (displayHandler)="displayHandler($event)"
-></movie-list-panel>
+  (displayChanged)="onDisplayChanged($event)"
+></app-movie-list-panel>
 
 <div *ngIf="!movies.length" class="empty-container"><h3>No movies added to the list yet</h3></div>
 

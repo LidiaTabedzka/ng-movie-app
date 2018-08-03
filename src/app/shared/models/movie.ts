@@ -1,4 +1,4 @@
-export class Movie {
+export interface Movie {
   id: string;
   movieId: string;
   title: string;

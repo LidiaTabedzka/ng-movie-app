@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'movie-list-panel',
+  selector: 'app-movie-list-panel',
   templateUrl: './movie-list-panel.component.html',
   styleUrls: ['./movie-list-panel.component.css']
 })
@@ -14,25 +14,25 @@ export class MovieListPanelComponent {
   @Output() favouritesFilterHandler = new EventEmitter<any>();
   @Output() sortingHandler = new EventEmitter<string>();
   @Output() perPageHandler = new EventEmitter<number>();
-  @Output() displayHandler = new EventEmitter<string>();
+  @Output() displayChanged = new EventEmitter<string>();
 
-  favouritesFilterHandle(filterChecked: boolean): void {
+  favouritesFilterHandle(filterChecked: boolean) {
     this.favouritesFilterHandler.emit(filterChecked);
   }
 
-  clearListHandler(): void {
+  clearListHandler() {
     this.clearList.emit();
   }
 
-  sortingHandle(selectedSortValue: string): void {
+  sortingHandle(selectedSortValue: string) {
     this.sortingHandler.emit(selectedSortValue);
   }
 
-  perPageHandle(perPage: number): void {
+  perPageHandle(perPage: number) {
     this.perPageHandler.emit(perPage);
   }
 
-  displayHandle(displayOption: string): void {
-    this.displayHandler.emit(displayOption);
+  onDisplayChanged(displayOption: string) {
+    this.displayChanged.emit(displayOption);
   }
 }

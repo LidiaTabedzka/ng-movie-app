@@ -10,7 +10,7 @@ export class PaginationComponent {
   @Input() currentPage: number;
   @Output() currentPageHandler = new EventEmitter<number>();
 
-  pageChangeHandler(page: number): void {
+  pageChangeHandler(page: number) {
     this.currentPageHandler.emit(page);
   }
 }
