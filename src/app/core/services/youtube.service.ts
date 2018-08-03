@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError, tap, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-import { Movie } from '../shared/models/movie';
-import { MovieUtilsService } from './movie-utils.service';
+import { Movie } from '../../shared/models/movie';
+import { YOUTUBE_ERROR_MESSAGE, NO_YOUTUBE_MOVIES_MESSAGE } from '../../shared/constans/messages';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +16,23 @@ export class YoutubeService {
   private readonly YOUTUBE_PLAYER_URL = 'http://www.youtube.com/embed/';
 
   constructor(
-    private http: HttpClient,
-    private movieUtilsService: MovieUtilsService
+    private http: HttpClient
   ) { }
 
-  getYoutubeData(movieId: string): Observable<any> {
+  getYoutubeData(movieId: string) {
     const url = `${this.YOUTUBE_URL}${movieId}&key=${this.API_KEY}&part=snippet,contentDetails,statistics`;
     return this.http.get(url).pipe(
-      map((resp: any) => resp.items[0]),
-      catchError(err => throwError(this.movieUtilsService.YOUTUBE_ERROR_MESSAGE))
+      map((resp: any) => {
+        if (resp.items[0]) {
+          return this.youtubeResponseFormatter(resp.items[0]);
+        }
+        return NO_YOUTUBE_MOVIES_MESSAGE;
+      }),
+      catchError(err => throwError(YOUTUBE_ERROR_MESSAGE))
     );
   }
 
-  youtubeResponseFormatter(movieDetails): Movie {
+  private youtubeResponseFormatter(movieDetails): Movie {
     const movie: Movie = {
       id: uuid(),
       movieId: movieDetails.id,

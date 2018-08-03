@@ -1,33 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { MovieComponent } from './movie/movie.component';
-import { AddMovieComponent } from './add-movie/add-movie.component';
-import { MovieListComponent } from './movie-list/movie-list.component';
+import { MovieListComponent } from './movie-list.component';
 import { MovieListPanelComponent } from './movie-list-panel/movie-list-panel.component';
-import { AppRoutingModule } from './app-routing.module';
+import { MovieListRoutingModule } from './movie-list-routing.module';
 
 @NgModule({
   declarations: [
     MovieComponent,
-    AddMovieComponent,
     MovieListComponent,
     MovieListPanelComponent
   ],
   imports: [
     CommonModule,
-    FormsModule,
     SharedModule,
-    AppRoutingModule
+    MovieListRoutingModule
   ],
   exports: [
     MovieComponent,
-    AddMovieComponent,
     MovieListComponent,
     MovieListPanelComponent,
-    AppRoutingModule
+    MovieListRoutingModule
   ]
 })
-export class MovieModule { }
+export class MovieListModule { }

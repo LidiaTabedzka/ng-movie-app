@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Movie } from '../../shared/models/movie';
+import { Movie } from '../../../shared/models/movie';
 
 @Component({
   selector: 'app-movie',
@@ -13,11 +13,11 @@ export class MovieComponent {
 
   constructor(private sanitizer: DomSanitizer) { }
 
-  handleModalOpen(): void {
+  handleModalOpen() {
     this.openModal = !this.openModal;
   }
 
-  sanitizeIframeSrc(src: string): SafeResourceUrl {
+  sanitizeIframeSrc(src: string) {
     const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(src);
     return url;
   }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
 
 import { Movie } from '../../shared/models/movie';
-import { YoutubeService } from '../../core/youtube.service';
-import { MoviesService } from '../../core/movies.service';
+import { MoviesService } from '../../core/services/movies.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -30,22 +30,21 @@ export class MovieListComponent implements OnInit {
   pagesRange: Array<number>;
 
   constructor(
-    private youtubeService: YoutubeService,
     private moviesService: MoviesService
   ) { }
 
-  getMovies(pageOffset: number, perPage: number): void {
-    const { movies, totalMoviesCount } =  this.moviesService.getMovies(perPage, pageOffset);
+  getMovies(pageOffset: number, perPage: number) {
+    const { movies, totalMoviesCount } = this.moviesService.getMovies(perPage, pageOffset);
     this.movies = movies;
     this.totalMoviesCount = totalMoviesCount;
   }
 
-  resetState(pageOffset: number, perPage: number): void {
+  resetState(pageOffset: number, perPage: number) {
     this.getMovies(pageOffset, perPage);
     this.pagesRangeCreator(perPage);
   }
 
-  delete(movieId: string): void {
+  delete(movieId: string) {
     this.moviesService.deleteMovie(movieId);
     const isLastPage: boolean = this.pagesRange[this.pagesRange.length - 1 ] === this.currentPage;
     let pageOffset: number = this.pageOffset;
@@ -55,33 +54,33 @@ export class MovieListComponent implements OnInit {
     this.resetState(pageOffset, this.moviesPerPage);
   }
 
-  clearList(): void {
+  clearList() {
     this.moviesService.clearMoviesList();
     this.getMovies(0, 0);
   }
 
-  favouritesHandler(movieId: string, isFavourite: boolean): void {
+  favouritesHandler(movieId: string, isFavourite: boolean) {
     this.moviesService.favouritesHandler(movieId, isFavourite, this.filterChecked);
     this.resetState(0, this.moviesPerPage);
   }
 
-  favouritesFilterHandler(filterChecked: boolean): void {
+  favouritesFilterHandler(filterChecked: boolean) {
     this.filterChecked = filterChecked;
     this.moviesService.favouritesFilterHandler(filterChecked);
     this.resetState(0, this.moviesPerPage);
   }
 
-  sortingHandler(selectedSortValue: string): void {
+  sortingHandler(selectedSortValue: string) {
     this.moviesService.sortingHandler(this.SORTING_OPTIONS, selectedSortValue);
     this.resetState(0, this.moviesPerPage);
   }
 
-  perPageHandler(perPage: number): void {
+  perPageHandler(perPage: number) {
     this.moviesPerPage = perPage;
     this.resetState(0, perPage);
   }
 
-  pagesRangeCreator(perPage: number): void {
+  pagesRangeCreator(perPage: number) {
     const pagesRange: Array<number> = [];
     for (let i = 1; i <= Math.ceil(this.totalMoviesCount / perPage); i++) {
       pagesRange.push(i);
@@ -89,7 +88,7 @@ export class MovieListComponent implements OnInit {
     this.pagesRange = pagesRange;
   }
 
-  currentPageHandler(pageNumber: number): void {
+  currentPageHandler(pageNumber: number) {
     this.currentPage = pageNumber;
     const pageOffset: number = (pageNumber - 1) * this.moviesPerPage;
     this.pageOffset = pageOffset;
@@ -97,19 +96,20 @@ export class MovieListComponent implements OnInit {
     this.getMovies(pageOffset, this.moviesPerPage);
   }
 
-  uploadListHandler(): void {
+  uploadListHandler() {
     this.moviesService.uploadSampleList()
+      .pipe(take(1))
       .subscribe(response => {
         response.map(resp => {
-          if (resp) {
-            this.moviesService.addMovie(this.youtubeService.youtubeResponseFormatter(resp));
+          if (typeof resp === 'object') {
+            this.moviesService.addMovie(resp);
             this.resetState(0, this.moviesPerPage);
           }
         });
       });
   }
 
-  displayHandler(displayOption: string): void {
+  onDisplayChanged(displayOption: string) {
     this.tilesDisplayChosen = displayOption === 'tiles';
   }
 

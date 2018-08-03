@@ -1,65 +1,52 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
-import { MoviesService } from '../../core/movies.service';
-import { YoutubeService } from '../../core/youtube.service';
-import { VimeoService } from '../../core/vimeo.service';
-import { MovieUtilsService } from '../../core/movie-utils.service';
-import { MovieSearchService } from '../../core/movie-search.service';
+import { MoviesService } from '../../core/services/movies.service';
+import { MovieUtilsService } from '../../core/services/movie-utils.service';
+import { MovieSearchService } from '../../core/services/movie-search.service';
 import { Movie } from '../../shared/models/movie';
-import { Subscription } from 'rxjs';
+import { EMPTY_INPUT_MESSAGE } from '../../shared/constans/messages';
 
 @Component({
   selector: 'app-add-movie',
   templateUrl: './add-movie.component.html',
   styleUrls: ['./add-movie.component.css']
 })
-export class AddMovieComponent implements OnDestroy {
-  private readonly EMPTY_INPUT_MESSAGE = 'Please enter the movie id or url.';
-
+export class AddMovieComponent {
   movie: Movie;
   movieInput = '';
   errorMessages = [];
-  subscription: Subscription;
 
   constructor(
     private moviesService: MoviesService,
-    private youtubeService: YoutubeService,
-    private vimeoService: VimeoService,
     private movieUtilsService: MovieUtilsService,
     private movieSearchService: MovieSearchService,
     private router: Router
   ) { }
 
-  handleSubmit(): void {
+  handleSubmit() {
     if (!this.movieInput.trim()) {
-      this.errorMessages.push(this.EMPTY_INPUT_MESSAGE);
+      this.errorMessages.push(EMPTY_INPUT_MESSAGE);
       return;
     }
     const movieId: string = this.movieUtilsService.getMovieId(this.movieInput);
 
-    this.subscription = this.movieSearchService.findMovie(movieId)
+    this.movieSearchService.findMovie(movieId)
+      .pipe(take(1))
       .subscribe(resp => {
         resp.map(response => {
-          if (response.searchResults) {
-            this.moviesService.addMovie(response.provider === 'youtube' ?
-              this.youtubeService.youtubeResponseFormatter(response.searchResults)
-              :
-              this.vimeoService.vimeoResponseFormatter(response.searchResults));
+          if (typeof response === 'object') {
+            this.moviesService.addMovie(response);
             this.router.navigate([`movies-list`]);
+          } else {
+            this.errorMessages.push(response);
           }
-          else this.errorMessages.push(response);
-        })  
+        });
       });
   }
 
-  handleInputChange(): void {
-    this.errorMessages= [];
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  handleInputChange() {
+    this.errorMessages = [];
   }
 }
