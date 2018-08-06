@@ -33,8 +33,10 @@
 
 <app-pagination
   *ngIf="movies.length"
-  [pagesRange]="pagesRange"
+  [elementsPerPage]="moviesPerPage"
+  [totalElementsCount]="totalMoviesCount"
   [currentPage]="currentPage"
   (currentPageHandler)="currentPageHandler($event)"
+  (calculatedPagesRange)="calculatedPagesRange($event)"
 >
 </app-pagination>

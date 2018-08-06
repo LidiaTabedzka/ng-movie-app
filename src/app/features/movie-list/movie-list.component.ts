@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { take } from 'rxjs/operators';
 
 import { Movie } from '../../shared/models/movie';
@@ -39,9 +39,12 @@ export class MovieListComponent implements OnInit {
     this.totalMoviesCount = totalMoviesCount;
   }
 
+  calculatedPagesRange(range: Array<number>) {
+    this.pagesRange = range;
+  }
+
   resetState(pageOffset: number, perPage: number) {
     this.getMovies(pageOffset, perPage);
-    this.pagesRangeCreator(perPage);
   }
 
   delete(movieId: string) {
@@ -78,14 +81,6 @@ export class MovieListComponent implements OnInit {
   perPageHandler(perPage: number) {
     this.moviesPerPage = perPage;
     this.resetState(0, perPage);
-  }
-
-  pagesRangeCreator(perPage: number) {
-    const pagesRange: Array<number> = [];
-    for (let i = 1; i <= Math.ceil(this.totalMoviesCount / perPage); i++) {
-      pagesRange.push(i);
-    }
-    this.pagesRange = pagesRange;
   }
 
   currentPageHandler(pageNumber: number) {

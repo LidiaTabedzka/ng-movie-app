@@ -6,11 +6,11 @@ import { Movie } from '../../shared/models/movie';
 })
 export class LocalStorageService {
 
-  setItem(movies: Movie[]) {
-    localStorage.setItem('moviesList', JSON.stringify(movies));
+  setItem(movies: Movie[], key: string) {
+    localStorage.setItem(key, JSON.stringify(movies));
   }
 
-  removeItem() {
-    localStorage.removeItem('moviesList');
+  removeItem(key: string) {
+    localStorage.removeItem(key);
   }
 }

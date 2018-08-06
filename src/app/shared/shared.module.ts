@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginationComponent } from './components/pagination/pagination.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MaterialModule } from './material.module';
 
 @NgModule({
-  declarations: [PaginationComponent, PageNotFoundComponent],
+  declarations: [PaginationComponent],
   imports: [
     MaterialModule,
     BrowserAnimationsModule,
@@ -15,8 +14,7 @@ import { MaterialModule } from './material.module';
   exports: [
     MaterialModule,
     BrowserAnimationsModule,
-    PaginationComponent,
-    PageNotFoundComponent
+    PaginationComponent
   ]
 })
 export class SharedModule { }

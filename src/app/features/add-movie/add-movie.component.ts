@@ -30,7 +30,7 @@ export class AddMovieComponent {
       this.errorMessages.push(EMPTY_INPUT_MESSAGE);
       return;
     }
-    const movieId: string = this.movieUtilsService.getMovieId(this.movieInput);
+    const movieId = this.movieUtilsService.getMovieId(this.movieInput);
 
     this.movieSearchService.findMovie(movieId)
       .pipe(take(1))
