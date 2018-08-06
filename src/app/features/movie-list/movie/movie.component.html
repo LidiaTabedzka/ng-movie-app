@@ -12,10 +12,3 @@
     <button (click)="handleModalOpen()">Watch movie</button>
   </div>
 </div>
-
-<div class="modal" [class.open]="openModal">
-  <div class="modal-content">
-    <span class="close" (click)="handleModalOpen()">x</span>
-    <iframe type="text/html" width="640" height="360" frameborder="0" allowfullscreen [src]="sanitizeIframeSrc(movie.iframeSrc)"></iframe>
-  </div>
-</div>

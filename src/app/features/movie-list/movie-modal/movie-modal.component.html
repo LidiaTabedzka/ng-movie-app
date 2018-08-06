@@ -1,0 +1,8 @@
+<div>
+  <mat-dialog-content>
+    <iframe type="text/html" width="640" height="360" frameborder="0" allowfullscreen [src]="sanitizeIframeSrc(data.src)"></iframe>
+  </mat-dialog-content>
+  <mat-dialog-actions class="modal-actions-container">
+    <button class="modal-close-button" mat-button [mat-dialog-close]="true">Close</button>
+  </mat-dialog-actions>
+</div>

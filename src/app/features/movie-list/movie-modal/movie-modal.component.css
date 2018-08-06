@@ -1,0 +1,12 @@
+.modal-actions-container{
+  justify-content: flex-end;
+}
+
+.modal-close-button {
+  width: 60px;
+}
+
+.modal-close-button:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
