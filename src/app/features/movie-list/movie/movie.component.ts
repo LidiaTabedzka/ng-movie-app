@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material';
+import { MovieModalComponent } from '../movie-modal/movie-modal.component';
 import { Movie } from '../../../shared/models/movie';
 
 @Component({
@@ -9,16 +10,14 @@ import { Movie } from '../../../shared/models/movie';
 })
 export class MovieComponent {
   @Input() movie: Movie;
-  openModal = false;
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(
+    public dialog: MatDialog
+  ) { }
 
   handleModalOpen() {
-    this.openModal = !this.openModal;
-  }
-
-  sanitizeIframeSrc(src: string) {
-    const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(src);
-    return url;
+    this.dialog.open(MovieModalComponent, {
+      data: { src: this.movie.iframeSrc, title: this.movie.title }
+    });
   }
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { YoutubeService } from './youtube.service';
 import { LocalStorageService } from './local-storage.service';
 import { Movie } from '../../shared/models/movie';
+import { MOVIES_LIST_KEY } from '../../shared/constans/localStorageKeys';
 import { forkJoin } from 'rxjs';
 
 @Injectable({
@@ -26,26 +27,26 @@ export class MoviesService {
   addMovie(movie: Movie) {
     this.movies.unshift(movie);
     this.filteredMovies.unshift(movie);
-    this.localStorageService.setItem(this.filteredMovies);
+    this.localStorageService.setItem(this.filteredMovies, MOVIES_LIST_KEY);
   }
 
   deleteMovie(movieId: string) {
     this.movies = this.movies.filter(movie => movie.id !== movieId);
     this.filteredMovies = this.filteredMovies.filter(movie => movie.id !== movieId);
-    this.localStorageService.setItem(this.filteredMovies);
+    this.localStorageService.setItem(this.filteredMovies, MOVIES_LIST_KEY);
   }
 
   clearMoviesList() {
     this.movies = [];
     this.filteredMovies = [];
-    this.localStorageService.removeItem();
+    this.localStorageService.removeItem(MOVIES_LIST_KEY);
   }
 
   favouritesHandler(movieId: string, isFavourite: boolean, filterChecked: boolean) {
     this.movies = this.movies.map(movie => movie.id === movieId ? {...movie, favourite: !isFavourite } : movie);
     const movies: Movie[] = this.filteredMovies.map(movie => movie.id === movieId ? {...movie, favourite: !isFavourite } : movie);
     this.filteredMovies = filterChecked ? movies.filter(movie => movie.id !== movieId) : movies;
-    this.localStorageService.setItem(this.filteredMovies);
+    this.localStorageService.setItem(this.filteredMovies, MOVIES_LIST_KEY);
   }
 
   favouritesFilterHandler(filterChecked: boolean) {
